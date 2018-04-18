@@ -23,34 +23,43 @@ public class cameraMovment : MonoBehaviour {
     {
         camPos = transform.position;
 
-        if (Input.mousePosition.x > screenWidth - Boundary)
-            camPos.x += speed * Time.deltaTime;
-        else if (Input.mousePosition.x < Boundary)
-            camPos.x -= speed * Time.deltaTime;
-
-        if (Input.mousePosition.y > screenHeight - Boundary)
-            camPos.z += speed * Time.deltaTime;
-        else if (Input.mousePosition.y < Boundary)
-            camPos.z -= speed * Time.deltaTime;
-
-        while(Input.GetMouseButtonDown(2))
+        if (!Input.GetMouseButton(2))
         {
-            float h = speed * Input.GetAxisRaw("Mouse Y");
-            float V = speed * Input.GetAxisRaw("Mouse X");
-            transform.Translate(V, h, 0);
+            if (Input.mousePosition.x > screenWidth - Boundary && transform.position.x < 25f)
+                camPos.x += speed * Time.deltaTime;
+            else if (Input.mousePosition.x < Boundary && transform.position.x > -25f)
+                camPos.x -= speed * Time.deltaTime;
+
+            if (Input.mousePosition.y > screenHeight - Boundary && transform.position.y < 25f)
+                camPos.z += speed * Time.deltaTime;
+            else if (Input.mousePosition.y < Boundary && transform.position.y > -25f)
+                camPos.z -= speed * Time.deltaTime;
+        }
+
+        if(Input.GetMouseButton(2))
+        {
+            mousemove();
         }
 
         transform.position = camPos;
 
-        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0)
+        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0 && transform.position.y > 5)
         {
             //FOV.fieldOfView -= 5;
             transform.position = new Vector3(transform.position.x, transform.position.y + -1f, transform.position.z);
         }
-        if(Input.GetAxisRaw("Mouse ScrollWheel") < 0)
+        if(Input.GetAxisRaw("Mouse ScrollWheel") < 0 && transform.position.y < 40)
         {
             //FOV.fieldOfView += 5;
             transform.position = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
         }
+    }
+
+    void mousemove()
+    {
+        float x = Input.GetAxisRaw("Mouse X");
+        float y = Input.GetAxisRaw("Mouse Y");
+        camPos += transform.right * (x * -1) * Time.deltaTime * speed * 2;
+        camPos += transform.up * (y * -1) * Time.deltaTime * speed * 2;
     }
 }
