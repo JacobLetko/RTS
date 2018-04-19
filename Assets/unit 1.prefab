@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23505514221941358}
   - component: {fileID: 195090052239308222}
   - component: {fileID: 114474306366439184}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: unit 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18470aa281409e04cb7f2ed84faf6df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!195 &195090052239308222
 NavMeshAgent:
   m_ObjectHideFlags: 1

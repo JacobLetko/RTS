@@ -9,14 +9,7 @@ public class cameraMovment : MonoBehaviour {
 
     int screenWidth = Screen.width;
     int screenHeight = Screen.height;
-    Camera FOV;
     Vector3 camPos;
-
-    private void Awake()
-    {
-        FOV = GetComponent<Camera>();
-    }
-
 
     // Update is called once per frame
     void Update ()
@@ -30,9 +23,9 @@ public class cameraMovment : MonoBehaviour {
             else if (Input.mousePosition.x < Boundary && transform.position.x > -25f)
                 camPos.x -= speed * Time.deltaTime;
 
-            if (Input.mousePosition.y > screenHeight - Boundary && transform.position.y < 25f)
+            if (Input.mousePosition.y > screenHeight - Boundary && transform.position.z < 25f)
                 camPos.z += speed * Time.deltaTime;
-            else if (Input.mousePosition.y < Boundary && transform.position.y > -25f)
+            else if (Input.mousePosition.y < Boundary && transform.position.z > -25f)
                 camPos.z -= speed * Time.deltaTime;
         }
 
@@ -45,12 +38,10 @@ public class cameraMovment : MonoBehaviour {
 
         if (Input.GetAxisRaw("Mouse ScrollWheel") > 0 && transform.position.y > 5)
         {
-            //FOV.fieldOfView -= 5;
             transform.position = new Vector3(transform.position.x, transform.position.y + -1f, transform.position.z);
         }
         if(Input.GetAxisRaw("Mouse ScrollWheel") < 0 && transform.position.y < 40)
         {
-            //FOV.fieldOfView += 5;
             transform.position = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
         }
     }

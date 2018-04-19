@@ -12,16 +12,8 @@ public class movement : MonoBehaviour
         nav = GetComponent<NavMeshAgent>();
     }
 
-    private void Update()
+    public void setDestination(RaycastHit hit)
     {
-        if(Input.GetMouseButtonDown(1))
-        {
-            RaycastHit hit;
-
-            if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100))
-            {
-                nav.destination = hit.point;
-            }
-        }
+        nav.destination = hit.point;
     }
 }
