@@ -8,25 +8,41 @@ public class Spawner : MonoBehaviour {
     public List<GameObject> pool;
     public int max;
     public int count;
+    public int want;
 
 	// Use this for initialization
 	void Start ()
     {
 		for(int i = 0; i < max; i++)
         {
-            GameObject unit =  Instantiate(prefab);
+            GameObject unit =  Instantiate(prefab, transform);
             unit.gameObject.SetActive(false);
             unit.transform.position = transform.position;
             pool.Add(unit);
         }
 	}
 
-    public void Spawn()
+    private void Update()
     {
-        if (count < max)
+        if (want > 0 && count < max)
         {
-            pool[count].gameObject.SetActive(true);
-            count++;
+            for (int i = 0; i < want; i++)
+            {
+                StartCoroutine(Spawn());
+                count++;
+                want--;
+            }
         }
+    }
+
+    IEnumerator Spawn()
+    {
+        pool[count].SetActive(true);
+        yield return new WaitForSeconds(5);
+    }
+
+    public void AddWant()
+    {
+        want++;
     }
 }
