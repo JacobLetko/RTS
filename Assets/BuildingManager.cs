@@ -3,21 +3,56 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingManager : MonoBehaviour {
+    [Header("prefabs")]
+    public GameObject Base;
+    public GameObject Builder;
 
-    public GameObject[] buildings;
+    public GameObject[] BuildersPool;
+    public GameObject[] BasePool;
+
+    public int max;
+    public int count;
+
     private BuildingPlacement place;
+    public static BuildingManager instance;
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else { Destroy(this); }
+        BuildersPool = new GameObject[max];
+        BasePool = new GameObject[max];
+
+    }
 
     private void Start()
     {
         place = GetComponent<BuildingPlacement>();
+        count = 0;
+
+        //Pooling
+        GameObject hold;
+        //base pool
+        for (int i =0; i < max; i++)
+        {
+            hold = Instantiate(Base);
+            hold.SetActive(false);
+            BasePool[i] = hold;
+        }
+        //builder pool
+        for(int i = 0; i < max; i++)
+        {
+            hold = Instantiate(Builder);
+            hold.SetActive(false);
+            BuildersPool[i] = hold;
+        }
     }
 
-    private void OnGUI()
+    public void placeBase()
     {
-        for(int i =0; i < buildings.Length; i++)
-        {
-            if (GUI.Button(new Rect(Screen.width / 20, Screen.height / 15 + Screen.height / 12 * i, 100, 30), buildings[i].name))
-                place.SetItem(buildings[i]);
-        }
+        BasePool[count].SetActive(true);
+         place.SetItem(BasePool[count]);
     }
 }

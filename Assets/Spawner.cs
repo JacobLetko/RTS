@@ -4,32 +4,24 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour {
 
-    public GameObject prefab;
-    public List<GameObject> pool;
-    public int max;
-    public int count;
     public int want;
+    public GameObject GameManager;
+    BuildingManager manager;
 
 	// Use this for initialization
 	void Start ()
     {
-		for(int i = 0; i < max; i++)
-        {
-            GameObject unit =  Instantiate(prefab, transform);
-            unit.gameObject.SetActive(false);
-            unit.transform.position = transform.position;
-            pool.Add(unit);
-        }
+        manager = GameManager.GetComponent<BuildingManager>();
+        manager = BuildingManager.instance;
 	}
 
     private void Update()
     {
-        if (want > 0 && count < max)
+        if (want > 0 && manager.count< manager.max)
         {
             for (int i = 0; i < want; i++)
             {
                 StartCoroutine(Spawn());
-                count++;
                 want--;
             }
         }
@@ -37,7 +29,9 @@ public class Spawner : MonoBehaviour {
 
     IEnumerator Spawn()
     {
-        pool[count].SetActive(true);
+        manager.BuildersPool[manager.count].SetActive(true);
+        manager.count++;
+        //manager.findObject();
         yield return new WaitForSeconds(5);
     }
 

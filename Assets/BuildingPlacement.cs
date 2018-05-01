@@ -1,21 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BuildingPlacement : MonoBehaviour
 {
     private BuildingPlaceable place;
     private GameObject current;
-    private bool Placed;
 
     public LayerMask buildings;
     public LayerMask UI;
     private BuildingPlaceable placeOld;
 
+    private bool placed = false;
+
 	public void SetItem(GameObject b)
     {
-        Placed = false;
-        current = Instantiate(b);
+        placed = false;
+        current = b;
         place = current.GetComponent<BuildingPlaceable>();
     }
 
@@ -32,7 +34,7 @@ public class BuildingPlacement : MonoBehaviour
         RaycastHit hit;
         Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (current != null && !Placed)
+        if (current != null && canPlace() && !placed)
         {
             if(Physics.Raycast(cameraRay, out hit))
             {
@@ -42,32 +44,24 @@ public class BuildingPlacement : MonoBehaviour
                 }   
             }
             if (Input.GetMouseButtonDown(0) && canPlace())
-                Placed = true;
+                placed = true;
         }
         else
         {
-            if (Input.GetMouseButtonDown(0) && canPlace())
+            if (Input.GetMouseButtonDown(0) && canPlace() && !EventSystem.current.IsPointerOverGameObject())
             {
-                if (Physics.Raycast(cameraRay, out hit, Mathf.Infinity, buildings,QueryTriggerInteraction.Collide))
+                if (Physics.Raycast(cameraRay, out hit, Mathf.Infinity, buildings, QueryTriggerInteraction.Collide))
                 {
-                    //if (placeOld != null && Physics.Raycast(cameraRay, out hit, Mathf.Infinity, UI))
-                    //    placeOld.SetSelected(false);
-
                     BuildingPlaceable buildingPlaceable = hit.collider.gameObject.GetComponent<BuildingPlaceable>();
                     if(buildingPlaceable != null)
                     {
                         buildingPlaceable.SetSelected(true);
                         placeOld = buildingPlaceable;
                     }
-
-                    //hit.collider.gameObject.GetComponent<BuildingPlaceable>()
-                    //placeOld = hit.collider.gameObject.GetComponent<BuildingPlaceable>();
                 }
                 else
                 {
-                    placeOld.SetSelected(false);
-                    //if (placeOld != null && Physics.Raycast(cameraRay, out hit, Mathf.Infinity, UI))
-                        
+                    placeOld.SetSelected(false);                        
                 }
             }
         }
