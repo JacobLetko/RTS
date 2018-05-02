@@ -256,7 +256,8 @@ MonoBehaviour:
   BuildersPool: []
   BasePool: []
   max: 100
-  count: 0
+  BaseCount: 0
+  BuilderCount: 0
 --- !u!114 &114543432607328916
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -11,7 +11,8 @@ public class BuildingManager : MonoBehaviour {
     public GameObject[] BasePool;
 
     public int max;
-    public int count;
+    public int BaseCount;
+    public int BuilderCount;
 
     private BuildingPlacement place;
     public static BuildingManager instance;
@@ -30,7 +31,8 @@ public class BuildingManager : MonoBehaviour {
     private void Start()
     {
         place = GetComponent<BuildingPlacement>();
-        count = 0;
+        BaseCount = 0;
+        BuilderCount = 0;
 
         //Pooling
         GameObject hold;
@@ -39,12 +41,14 @@ public class BuildingManager : MonoBehaviour {
         {
             hold = Instantiate(Base);
             hold.SetActive(false);
+            hold.transform.parent = this.transform;
             BasePool[i] = hold;
         }
         //builder pool
         for(int i = 0; i < max; i++)
         {
             hold = Instantiate(Builder);
+            hold.transform.parent = this.transform;
             hold.SetActive(false);
             BuildersPool[i] = hold;
         }
@@ -52,7 +56,8 @@ public class BuildingManager : MonoBehaviour {
 
     public void placeBase()
     {
-        BasePool[count].SetActive(true);
-         place.SetItem(BasePool[count]);
+        BasePool[BaseCount].SetActive(true);
+        place.SetItem(BasePool[BaseCount]);
+        BaseCount++;
     }
 }

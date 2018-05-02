@@ -17,7 +17,7 @@ public class Spawner : MonoBehaviour {
 
     private void Update()
     {
-        if (want > 0 && manager.count< manager.max)
+        if (want > 0 && manager.BuilderCount< manager.max)
         {
             for (int i = 0; i < want; i++)
             {
@@ -29,10 +29,11 @@ public class Spawner : MonoBehaviour {
 
     IEnumerator Spawn()
     {
-        manager.BuildersPool[manager.count].SetActive(true);
-        manager.count++;
-        //manager.findObject();
         yield return new WaitForSeconds(5);
+        manager.BuildersPool[manager.BuilderCount].SetActive(true);
+        manager.BuildersPool[manager.BuilderCount].transform.parent = null;
+        manager.BuildersPool[manager.BuilderCount].transform.position = this.transform.position;
+        manager.BuilderCount++;
     }
 
     public void AddWant()

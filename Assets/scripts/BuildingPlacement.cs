@@ -14,7 +14,7 @@ public class BuildingPlacement : MonoBehaviour
 
     private bool placed = false;
 
-	public void SetItem(GameObject b)
+    public void SetItem(GameObject b)
     {
         placed = false;
         current = b;
@@ -23,10 +23,7 @@ public class BuildingPlacement : MonoBehaviour
 
     bool canPlace()
     {
-        if (place.col.Count > 0)
-            return false;
-        else
-            return true;
+        return !(place.col.Count > 0);
     }
 
     private void Update()
@@ -36,15 +33,18 @@ public class BuildingPlacement : MonoBehaviour
 
         if (current != null && canPlace() && !placed)
         {
-            if(Physics.Raycast(cameraRay, out hit))
+            if (Physics.Raycast(cameraRay, out hit))
             {
-                if(hit.collider.tag == "Ground")
+                if (hit.collider.tag == "Ground")
                 {
                     current.transform.position = hit.point;
-                }   
+                }
             }
             if (Input.GetMouseButtonDown(0) && canPlace())
+            {
+                current.transform.parent = null;
                 placed = true;
+            }
         }
         else
         {
@@ -53,7 +53,7 @@ public class BuildingPlacement : MonoBehaviour
                 if (Physics.Raycast(cameraRay, out hit, Mathf.Infinity, buildings, QueryTriggerInteraction.Collide))
                 {
                     BuildingPlaceable buildingPlaceable = hit.collider.gameObject.GetComponent<BuildingPlaceable>();
-                    if(buildingPlaceable != null)
+                    if (buildingPlaceable != null)
                     {
                         buildingPlaceable.SetSelected(true);
                         placeOld = buildingPlaceable;
@@ -61,7 +61,7 @@ public class BuildingPlacement : MonoBehaviour
                 }
                 else
                 {
-                    placeOld.SetSelected(false);                        
+                    placeOld.SetSelected(false);
                 }
             }
         }

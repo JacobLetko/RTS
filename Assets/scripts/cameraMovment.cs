@@ -34,16 +34,18 @@ public class cameraMovment : MonoBehaviour {
             mousemove();
         }
 
-        transform.position = camPos;
+        //transform.position = camPos;
 
         if (Input.GetAxisRaw("Mouse ScrollWheel") > 0 && transform.position.y > 5)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y + -1f, transform.position.z);
+            camPos.y = transform.position.y + -1f;
         }
         if(Input.GetAxisRaw("Mouse ScrollWheel") < 0 && transform.position.y < 40)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
+            camPos.y = transform.position.y + 1f;
         }
+
+        transform.position = camPos;
     }
 
     void mousemove()
